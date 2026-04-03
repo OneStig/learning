@@ -1,0 +1,10 @@
+name = "fpil"
+version = "0.1.0"
+defaultTargets = ["fpil"]
+
+[[lean_lib]]
+name = "Fpil"
+
+[[lean_exe]]
+name = "fpil"
+root = "Main"
