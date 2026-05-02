@@ -50,12 +50,12 @@ def zip {α β : Type} (xs : List α) (ys : List β) : List (α × β) :=
 
 -- Write a polymorphic function take that returns the first nn entries in a list, where nn is a Nat. If the list contains fewer than nn entries, then the resulting list should be the entire input list. #eval take 3 ["bolete", "oyster"] should yield ["bolete", "oyster"], and #eval take 1 ["bolete", "oyster"] should yield ["bolete"].
 def take {α : Type} (n : Nat) (xs : List α) : List α :=
-  if n <= 0 then
-    List.nil
-  else
+  match n with
+  | 0 => List.nil
+  | Nat.succ n' =>
     match xs with
     | [] => List.nil
-    | x :: xs' => x :: take (n - 1) xs'
+    | x :: xs' => x :: take n' xs'
 
 #eval take 3 ["bolete", "oyster"]
 #eval take 1 ["bolete", "oyster"]
@@ -67,3 +67,7 @@ def distribute {α β γ : Type} (x : α × (β ⊕ γ)) : (α × β) ⊕ (α ×
   | Sum.inr g => Sum.inr (x.fst, g)
 
 -- Using the analogy between types and arithmetic, write a function that turns multiplication by two into a sum. In other words, it should have type Bool × α → α ⊕ α.
+def mapToSum {α : Type} (x : Bool × α) : α ⊕ α :=
+  match x.fst with
+  | Bool.true => Sum.inl x.snd
+  | Bool.false => Sum.inr x.snd
